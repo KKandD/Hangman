@@ -17,6 +17,21 @@ list_of_letters = list(selected_country)
 #print(list_of_letters)
 # zostawiam do sprawdzania, potem usuniemy
 
+def hidden_letters():
+    print_hidden_letters = ""
+    for letter in list_of_letters:
+        if letter == " ":
+            letter = " "
+        else:
+            letter = "_ "
+        print_hidden_letters += letter  
+    print(print_hidden_letters)
+hidden_letters()
+
+# list_of_hidden_letters = hidden_letters(letter)
+
+# print(list_of_hidden_letters)
+
 def lives_count():
     if level_dificultity == 1:
         lives = 6
