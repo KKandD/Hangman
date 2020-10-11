@@ -17,3 +17,5 @@ def lives_count():
 
 def level_dificultity():
     pass
+
+#
