@@ -1,4 +1,6 @@
+list_of_countries = open("countries.txt").read().splitlines()
 
+print(list_of_countries)
 
 def lives_count():
     if level_dificultity == 1:
