@@ -51,6 +51,8 @@ hangman_pics = ['''
       |
 =========''']
 
+player_state = ""
+
 print("Welcome to Hangman Countries!")
 print("\nHow to play:")
 print("You will see a number of short lines together that represent the number of letters in the word you have to guess. ")
@@ -74,12 +76,48 @@ elif choose_level == "2":
 elif choose_level == "3":
     lives = 2
 
+def print_hangman():
+    if choose_level == "1":
+        if lives == 6:
+            print(hangman_pics[0])
+        elif lives == 5:
+            print(hangman_pics[1])
+        elif lives == 4:
+            print(hangman_pics[2])
+        elif lives == 3:
+            print(hangman_pics[3])
+        elif lives == 3:
+            print(hangman_pics[4])
+        elif lives == 2:
+            print(hangman_pics[5])
+        elif lives == 1:
+            print(hangman_pics[6])
+        else:
+            print(hangman_pics[7])
+    elif choose_level == "2":
+        if lives == 4:
+            print(hangman_pics[0])
+        elif lives == 3:
+            print(hangman_pics[1])
+        elif lives == 2:
+            print(hangman_pics[3])
+        elif lives == 1:
+            print(hangman_pics[5])
+        else:
+            print(hangman_pics[6])
+    else:
+        if lives == 2:
+            print(hangman_pics[0])
+        elif lives == 1:
+            print(hangman_pics[3])
+        else:
+            print(hangman_pics[6])
 
 #wczytuję listę krajów z pliku
 list_of_countries = open("countries.txt").read().splitlines()
 
 #losowanie 1 kraju z listy
-selected_country = random.choice(list_of_countries)
+selected_country = random.choice(list_of_countries).upper()
 #print(selected_country)
 #zostawiam do sprawdzania, potem usuniemy
 
@@ -105,6 +143,8 @@ def hidden_letters():
         print_hidden_letters += letter  
     print(hangman_pics[0])
     print(print_hidden_letters)
+
+    player_state = list(print_hidden_letters)
 hidden_letters()
 
 
@@ -112,23 +152,33 @@ hidden_letters()
 
 # print(list_of_hidden_letters)
 
-player_guess = input()
+#walidacja inputu
+
+
 
 #dodaje zgadniętą literę do wyświetlanego wyniku
 def guess():
-    print_guess = ""
+
+    found = False
 
     for letter in list_of_letters:
         if letter.upper() == player_guess.upper():
+            found = True
             letter = player_guess
-        elif letter == " ":
-            letter = " "
-        else:
-            letter = "_ "
-        print_guess += letter
-    print(print_guess.upper())
+            player_state = letter
+        
+    print("Was found " + str(found))
+    
+    print(player_state)
+    #obsługa żyć
 
-guess()
+
+
+while lives > 0 and player_state != selected_country:
+
+    player_guess = input()
+
+    guess()
 
 
         
