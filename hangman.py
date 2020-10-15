@@ -51,7 +51,7 @@ hangman_pics = ['''
       |
 =========''']
 
-player_state = ""
+player_state = []
 
 print("Welcome to Hangman Countries!")
 print("\nHow to play:")
@@ -63,12 +63,38 @@ print("If the body becomes completed, you are 'hanged' which means you have lost
 print("If you guess all the letters in the word before you are 'hanged', you win.")
 input("Press ENTER to continue\n")
 
+# wczytuję listę krajów z pliku
+list_of_countries = open("countries.txt").read().splitlines()
+
+# losowanie 1 kraju z listy
+selected_country = random.choice(list_of_countries).upper()
+# print(selected_country)
+# zostawiam do sprawdzania, potem usuniemy
+
+# zliczenie liczby liter w wylosowanym wyrazie (chyba nie bedzie to będzie potrzebne, na razie zostawiam, najwyzej usuniemy)
+number_of_letters = len(selected_country)
+
+# print(number_of_letters)
+# zostawiam do sprawdzania, potem usuniemy
 
 
-choose_level = input("\nChoose Level of Difficulty:\n1-Easy (6 lives)\n2-Medium (4 lives)\n3-Hard (2 lives)\n")
+# zamiana string ze słowem na listę
+list_of_letters = list(selected_country)
+player_state = ["_"] * len(list_of_letters)
+print(list_of_letters)
 
-#Po wybraniu opcji trudnośći przypisuje nam liczbę żyćków
+# zostawiam do sprawdzania, potem usuniemy
+
+choose_level = input(
+    "\nChoose Level of Difficulty:\n1-Easy (6 lives)\n2-Medium (4 lives)\n3-Hard (2 lives)\n")
 lives = 0
+
+while choose_level != "1" and choose_level != "2" and choose_level != "3":
+    # Po wybraniu opcji trudnośći przypisuje nam liczbę żyćków
+    print("Choose correct Level of Difficulty")
+    choose_level = input(
+        "\nChoose Level of Difficulty:\n1-Easy (6 lives)\n2-Medium (4 lives)\n3-Hard (2 lives)\n")
+
 if choose_level == "1":
     lives = 6
 elif choose_level == "2":
@@ -76,6 +102,8 @@ elif choose_level == "2":
 elif choose_level == "3":
     lives = 2
 
+
+# wyświwetlanie obrazków w zależności od liczby pozostałych żyć
 def print_hangman():
     if choose_level == "1":
         if lives == 6:
@@ -113,72 +141,51 @@ def print_hangman():
         else:
             print(hangman_pics[6])
 
-#wczytuję listę krajów z pliku
-list_of_countries = open("countries.txt").read().splitlines()
-
-#losowanie 1 kraju z listy
-selected_country = random.choice(list_of_countries).upper()
-#print(selected_country)
-#zostawiam do sprawdzania, potem usuniemy
-
-#zliczenie liczby liter w wylosowanym wyrazie (chyba nie bedzie to będzie potrzebne, na razie zostawiam, najwyzej usuniemy)
-number_of_letters = len(selected_country)
-
-#print(number_of_letters)
-# zostawiam do sprawdzania, potem usuniemy
-
-#zamiana string ze słowem na listę
-list_of_letters = list(selected_country)
-print(list_of_letters)
-print
-# zostawiam do sprawdzania, potem usuniemy
 
 def hidden_letters():
-    print_hidden_letters = ""
-    for letter in list_of_letters:
-        if letter == " ":
-            letter = " "
-        else:
-            letter = "_ "
-        print_hidden_letters += letter  
-    print(hangman_pics[0])
-    print(print_hidden_letters)
+    print_hangman()
+    print(" ".join(player_state))
 
-    player_state = list(print_hidden_letters)
-hidden_letters()
+# walidacja inputu
+
+# dodaje zgadniętą literę do wyświetlanego wyniku
 
 
-# list_of_hidden_letters = hidden_letters(letter)
-
-# print(list_of_hidden_letters)
-
-#walidacja inputu
-
-
-
-#dodaje zgadniętą literę do wyświetlanego wyniku
 def guess():
+    global lives
 
     found = False
+    for i in range(len(list_of_letters)):
+        letter = list_of_letters[i]
 
-    for letter in list_of_letters:
         if letter.upper() == player_guess.upper():
             found = True
-            letter = player_guess
-            player_state = letter
-        
+            player_state[i] = letter
+            #count = list_of_letters.count(letter)
+            # print(count)
+            # letter_place = list_of_letters.index(letter)
+
+            # print(letter_place)
     print("Was found " + str(found))
-    
-    print(player_state)
-    #obsługa żyć
+    if not found :
+        lives -= 1
+    hidden_letters()
+    # obsługa żyć
+
+# def compare_lists():
 
 
+hidden_letters()
 
-while lives > 0 and player_state != selected_country:
+while lives > 0 and player_state != list_of_letters:
 
     player_guess = input()
 
     guess()
 
 
-        
+if lives <= 0:
+    print("GAME OVER")
+else:
+    print("Congrats! You WIN!!!")
+
