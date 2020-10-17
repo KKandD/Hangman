@@ -137,7 +137,6 @@ def game_state():
 
 def guess():
     global lives
-
     found = False
     for i in range(len(list_of_letters)):
         letter = list_of_letters[i]
@@ -153,17 +152,24 @@ def guess():
 
 game_state()
 
+history = []
 
 while lives > 0 and player_state != list_of_letters:
-    history = []
-
+    
     player_guess = input()
     while len(player_guess) != 1 or not(player_guess[0].isalpha()):
         print("Incorrect input, please try again...")
         player_guess = input()
-
+    
+    if player_guess in history:
+        print("Found in history")
+        continue
+    else:   
+        history.append(player_guess)
+        
     guess()
-
+    print("\n Already used letters:")
+    print(" ".join(history))
 
 if lives <= 0:
     print("GAME OVER")
